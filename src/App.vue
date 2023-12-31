@@ -32,25 +32,13 @@
         <WeatherListCard v-if="typeof forecast.list !== 'undefined'" :forecast="forecast"
           :formatForecastTime="formatForecastTime" :getWeatherSymbol="getWeatherSymbol" />
 
+        <WeatherText />
 
-        <div class="flex flex-col text-white text-left col-span-3 md:col-span-5">
-          <div class="text-xl font-bold py-4">
-            Weather
-          </div>
-          <div class="text-lg">
-            Weather is the state of the atmosphere, describing for example the degree to which it is hot or cold, wet or
-            dry, calm or stormy, clear or cloudy.[1] On Earth, most weather phenomena occur in the lowest layer of the
-            planet's atmosphere, the troposphere,[2][3] just below the stratosphere. Weather refers to day-to-day
-            temperature, precipitation, and other atmospheric conditions, whereas climate is the term for the averaging of
-            atmospheric conditions over longer periods of time.[4] When used without qualification, "weather" is generally
-            understood to mean the weather of Earth.
-          </div>
-        </div>
 
 
       </div>
 
-      <div v-if="error" class="error-message">{{ error }}</div>
+      <div v-if="error" class="text-red-700 text-center font-bold text-xl">{{ error }}</div>
     </main>
   </div>
 </template>
@@ -59,6 +47,7 @@
 
 import WeatherCard from './components/WeatherCard.vue';
 import WeatherListCard from './components/WeatherListCard.vue';
+import WeatherText from './components/WeatherText.vue'
 
 import config from './config.js';
 
@@ -67,7 +56,8 @@ export default {
   name: 'App',
   components: {
     WeatherCard,
-    WeatherListCard
+    WeatherListCard,
+    WeatherText
   },
   data() {
     return {
@@ -92,24 +82,22 @@ export default {
 
     getWeatherSymbol(weatherCode) {
       const weatherSymbols = {
-        '01d': '☀️', // clear sky day
-        '01n': '🌙', // clear sky night
-        '02d': '⛅', // few clouds day
-        '02n': '☁️', // few clouds night
-        '03d': '☁️', // scattered clouds day
-        '03n': '☁️', // scattered clouds night
-        '04d': '☁️', // broken clouds day
-        '04n': '☁️', // broken clouds night
-        '09d': '🌧️', // shower rain day
-        '09n': '🌧️', // shower rain night
-        '10d': '🌦️', // rain day
-        '10n': '🌦️', // rain night
-        '11d': '⛈️', // thunderstorm day
-        '11n': '⛈️', // thunderstorm night
-        '13d': '❄️', // snow day
-        '13n': '❄️', // snow night
-        '50d': '🌫️', // mist day
-        '50n': '🌫️', // mist night
+        '01d': '☀️',
+        '01n': '🌙',
+        '02d': '⛅',
+        '02n': '☁️',
+        '03d': '☁️',
+        '03n': '☁️',
+        '04d': '☁️',
+        '04n': '☁️',
+        '09d': '🌧️',
+        '09n': '🌧️',
+        '10d': '🌦️',
+        '10n': '🌦️',
+        '11d': '⛈️',
+        '11n': '⛈️',
+        '50d': '🌫️',
+        '50n': '🌫️',
       };
 
       return weatherSymbols[weatherCode] || '❓';
@@ -223,19 +211,6 @@ export default {
 
 main {
   font-family: 'Poppins', sans-serif;
-}
-
-body {
-  font-family: 'montserrat', sans-serif;
-}
-
-
-
-.error-message {
-  color: #ff0000;
-  font-size: 18px;
-  text-align: center;
-  margin-top: 20px;
 }
 
 main {
