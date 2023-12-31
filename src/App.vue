@@ -24,69 +24,13 @@
 
       <div class="grid grid-cols-1 md:grid-cols-8 md:grid-rows-2 gap-14">
 
-        <div class="bg-orange-100 p-7 text-orange-400 rounded-3xl col-span-3 md:row-span-2 w-full">
-          <div v-if="typeof weather.main !== 'undefined'">
-
-            <!-- Today and Arrow button -->
-            <div class="flex items-center justify-center mb-4 text-orange-400">
-              <div class="text-xl font-bold mr-2">Today</div>
-              <svg width="50px" height="50px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M7 10L12 15L17 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                  stroke-linejoin="round" />
-              </svg><!-- Arrow button, adjust size as needed -->
-            </div>
 
 
-            <!-- Temperature and Weather Symbol -->
-            <div class="text-orange-300 text-5xl flex items-center justify-center">
-              <div class="text-5xl ml-2">
-                {{ getWeatherSymbol(weather.weather[0].icon) }}
-              </div>
-              <div class="text-orange-400 text-8xl font-medium p-5">
-                {{ Math.round(weather.main.temp) }}°
-              </div>
+        <WeatherCard v-if="typeof weather.main !== 'undefined'" :weather="weather" :formatTime="formatTime"
+          :getWeatherSymbol="getWeatherSymbol" :dateBuilder="dateBuilder" />
 
-            </div>
-
-            <!-- Weather Status -->
-            <div class="text-xl font-medium p-4 text-center">
-              {{ weather.weather[0].main }}
-            </div>
-
-            <!-- Location and Date -->
-            <div class="mb-2 text-center">
-              <div class="text-lg p-4">{{ weather.name }}, {{ weather.sys.country }}</div>
-              <div class="text-lg p-4">{{ dateBuilder() }}</div>
-            </div>
-
-            <!-- Sunset Time and Avg Temp -->
-            <div class="text-lg  text-center">
-              Sunset: {{ formatTime(weather.sys.sunset) }} | Avg Temp: {{ Math.round(weather.main.temp) }}°c
-            </div>
-
-          </div>
-        </div>
-
-
-        <div
-          class="bg-orange-200 bg-opacity-50 backdrop-blur text-white col-span-3 md:col-span-5 grid grid-cols-5 gap-4 rounded-3xl p-10 blur-bg"
-          v-if="typeof forecast.list !== 'undefined'">
-          <div v-for="(day) in forecast.list.slice(0, 10)" :key="day.dt" class="">
-            <div class="flex flex-col items-center">
-              <div class="md:text-lg">
-                {{ formatForecastTime(day.dt) }}
-              </div>
-              <div class="flex items-center">
-                <div class="">
-                  {{ getWeatherSymbol(day.weather[0].icon) }}
-                </div>
-                <div class="">
-                  {{ Math.round(day.main.temp) }}°c
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <WeatherListCard v-if="typeof forecast.list !== 'undefined'" :forecast="forecast"
+          :formatForecastTime="formatForecastTime" :getWeatherSymbol="getWeatherSymbol" />
 
 
         <div class="flex flex-col text-white text-left col-span-3 md:col-span-5">
@@ -111,12 +55,24 @@
   </div>
 </template>
 <script>
+
+
+import WeatherCard from './components/WeatherCard.vue';
+import WeatherListCard from './components/WeatherListCard.vue';
+
+import config from './config.js';
+
+
 export default {
   name: 'App',
+  components: {
+    WeatherCard,
+    WeatherListCard
+  },
   data() {
     return {
-      api_key: 'e6036ce80eaad01639442f7264c2f73b',
-      url_base: 'https://api.openweathermap.org/data/2.5/',
+      api_key: config.api_key,
+      url_base: config.url_base,
       query: '',
       weather: {},
       forecast: {},
@@ -253,6 +209,8 @@ export default {
   },
 
 };
+
+
 </script>
 
 <style>
